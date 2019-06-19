@@ -24,7 +24,6 @@
                 "BKG_SUP_USER_NAME", "BOOKING_ID", "NON_COMPLETION_DESC", "THEORY_NUMBER",
                 "CHANGE_REASON", "RELATIONSHIP", "CREATED_BY", "CREATED_ON", "UPDATED_BY",
                 "UPDATED_ON", "FINANCE_ENTITY_REF"
-
             ],
             "andFilters": [
                 {
@@ -45,7 +44,6 @@
             "sourceName": "APPLICATION_RSIS_INFO",
             "removeColumns": [
                 "SENT_FOR_SCANNING"
-
             ]
         },
         {
@@ -67,8 +65,8 @@
         {
             "sourceName": "INDIVIDUAL",
             "removeColumns": [ 
-                "DATE_OF_BIRTH", "TEST_CENTRE_ID", "PREVIOUS_TEST_CENTRE_ID", "PERSON_INITIALS", "PERSON_FULL_NAME", 
-                "PERSON_REQUESTED_NAME", "VAT_REGISTERED", "DEFAULT_ADDRESS_CODE", "GENDER_CODE", "TOTAL_POINTS", 
+                "TEST_CENTRE_ID", "PREVIOUS_TEST_CENTRE_ID", "PERSON_INITIALS", "PERSON_FULL_NAME", 
+                "PERSON_REQUESTED_NAME", "VAT_REGISTERED", "DEFAULT_ADDRESS_CODE", "TOTAL_POINTS", 
                 "DATE_OF_FIRST_LICENCE", "LICENCE_EXPIRY_DATE", "LAST_UPDATED_BY_DVLA", "PP_STATUS_CODE", 
                 "PP_DATE_FIRST_ISSUED", "PP_CERTS_ISSUED", "PP_PACKS_ORDERED", "PP_DESPATCH_ADD", 
                 "PP_CONSENT_MARKER", "PP_STARTER_FEE_PAID", "BAD_DEBT_IND", "EXTERNAL_MAIL_CONSENT_IND",
@@ -78,7 +76,7 @@
                 "PREFERRED_LANGUAGE_CODE", "REASON_CODE", "STATE_CODE", "COMMUNICATION_PREF_CODE", 
                 "NOTES", "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON", "INCREASE_FEE_IND", 
                 "BOOKING_REVIEW_IND", "INTEGRITY_IND", "NO_MAILINGS", "WEB_IND_CODE", 
-                "ETHNIC_ORIGIN_CODE", "EU_LICENCE_IND", "DVLA_PHOTO_AUTH", "SC_PUBLISH_IND"
+                "EU_LICENCE_IND", "DVLA_PHOTO_AUTH", "SC_PUBLISH_IND"
             ]
         },
         {

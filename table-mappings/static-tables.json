@@ -308,6 +308,12 @@
             "removeColumns": [
                 "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON"
             ]
+        },
+        {
+            "sourceName": "ETHNIC_ORIGIN",
+            "removeColumns": [
+                "THEORY_NUMBER"
+            ]
         }
     ]
 }

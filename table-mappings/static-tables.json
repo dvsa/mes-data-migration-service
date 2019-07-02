@@ -130,7 +130,7 @@
         {
             "sourceName": "VEHICLE_SLOT_TYPE",
             "removeColumns": [ 
-                "VEHICLE_TYPE_CODE", "MINUTES", "VST_DESC", "CREATED_ON", "CREATED_BY", 
+                "SHORT_VST_DESC", "MINUTES", "VST_DESC", "CREATED_ON", "CREATED_BY", 
                 "UPDATED_ON", "UPDATED_BY"
             ]
         },

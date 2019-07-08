@@ -14,7 +14,7 @@ export const modifyTask = async (): Promise<void> => {
     targetArn,
     replicationInstanceArn,
     awsRegion,
-   } = config();
+  } = config();
 
   const dms = new DmsApi(awsRegion, logger);
 
@@ -101,4 +101,7 @@ function addDateFilters(options: Options) {
   const deploymentEndDate = startDate.plus(deploymentTimeWindow);
   addOnOrBeforeFilter(options, 'DEPLOYMENT', 'START_DATE', deploymentEndDate, logger);
   addOnOrAfterFilter(options, 'DEPLOYMENT', 'END_DATE', startDate, logger);
+
+  const ethnicOriginStartDate = startDate.minus(Duration.fromObject({ years: 3 }));
+  addBetweenFilter(options, 'ETHNIC_ORIGIN', 'LOADED_DATE', ethnicOriginStartDate, startDate, logger);
 }

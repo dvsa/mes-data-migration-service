@@ -48,6 +48,12 @@
                     "value": "1002"
                 }]
             }]
+        },
+        {
+            "sourceName": "ETHNIC_ORIGIN",
+            "removeColumns": [ 
+                "THEORY_NUMBER"
+            ]
         }
     ]
 }

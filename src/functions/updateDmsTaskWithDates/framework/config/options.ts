@@ -51,10 +51,16 @@ const dmsOptions = {
           }],
         }],
     },
+    {
+      sourceName: 'ETHNIC_ORIGIN',
+      removeColumns: [
+        'THEORY_NUMBER',
+      ],
+    },
   ],
 };
 
-export const getDmsOptions = () : Options => {
+export const getDmsOptions = (): Options => {
   const tarsSchema = config().tarsSchema;
   return { sourceSchema: tarsSchema, ...dmsOptions };
 };

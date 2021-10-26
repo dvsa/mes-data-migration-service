@@ -1,6 +1,6 @@
 export type Error = {
   err: {
-    name: string,
-    message: string,
-  },
+    name: string;
+    message: string;
+  };
 };

@@ -14,7 +14,7 @@ export const startSlsOffline = (): Promise<void> => {
     slsOfflineProcess.stdout.on('data', (data) => {
       if (data.includes('Offline listening on')) {
         console.log(data.toString().trim());
-        writeFileSync('.sls.pid', slsOfflineProcess.pid);
+        writeFileSync('.sls.pid', String(slsOfflineProcess.pid));
         resolve();
       }
     });

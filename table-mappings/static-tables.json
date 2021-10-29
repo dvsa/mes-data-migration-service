@@ -323,11 +323,15 @@
         },
         {
             "sourceName": "DRIVER_LICENCE_CATEGORY",
-            "removeColumns": []
+            "removeColumns": [
+                "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON"
+            ]
         },
         {
             "sourceName": "APP_SYSTEM_PARAMETER",
-            "removeColumns": []
+            "removeColumns": [
+                "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON"
+            ]
         }
     ]
 }

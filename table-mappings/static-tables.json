@@ -107,7 +107,7 @@
         },
         {
             "sourceName": "TEST_CENTRE_NAME",
-            "removeColumns": [ 
+            "removeColumns": [
                 "DISPLAY_ORDER", "UPDATED_ON", "CREATED_ON", "CREATED_BY", "UPDATED_BY"
             ],
             "andFilters": [
@@ -319,6 +319,18 @@
             "sourceName": "EXAMINER_GRADE",
             "removeColumns": [
               "DESCRIPTION", "SECTOR_MANAGER_IND", "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON"
+            ]
+        },
+        {
+            "sourceName": "DRIVER_LICENCE_CATEGORY",
+            "removeColumns": [
+                "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON"
+            ]
+        },
+        {
+            "sourceName": "APP_SYSTEM_PARAMETER",
+            "removeColumns": [
+                "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON"
             ]
         }
     ]

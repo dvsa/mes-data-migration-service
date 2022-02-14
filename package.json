@@ -70,7 +70,7 @@
     "lint:fix": "tslint --fix -p .",
     "package": "./package.sh",
     "prepush": "npm run security-scan && npm run lint && npm test",
-    "security-scan": "git secrets --scan && git log -p | scanrepo",
+    "security-scan": "git secrets --scan",
     "stack:up": "ts-node start-stack.ts",
     "stack:down": "ts-node stop-stack.ts",
     "start": "sls offline start",

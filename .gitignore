@@ -26,3 +26,4 @@ dms-configurator/coverage
 dms-configurator/build
 .sls.pid
 .nyc_output/
+tslint-to-eslint-config.log

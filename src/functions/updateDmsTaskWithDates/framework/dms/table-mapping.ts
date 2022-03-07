@@ -105,7 +105,7 @@ function addRemovecolumns(index: number, sourceSchema:string, sourceName:string,
 }
 
 function addAndFilters(element:Table):any {
-      // then add include selection rules for every table...
+  // then add include selection rules for every table...
   const allFilters: any[] = [];
   element.andFilters.forEach((andFilter: AndFilter) => {
     const filter: any = {

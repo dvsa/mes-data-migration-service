@@ -16,7 +16,7 @@ export class DmsApi {
   constructor(
     readonly region: string,
     private logger: ILogger,
-    ) {
+  ) {
     this.dms = new DMS({ apiVersion: '2016-01-01', region: `${region}` });
   }
 
@@ -123,7 +123,7 @@ export class DmsApi {
           sourceEndpointArn,
           destEndpointArn,
           tableMappings,
-          );
+        );
       }
       this.logger.error(
         {

@@ -28,7 +28,7 @@
     "test:int:suites": "jasmine 'build/**/*.int.js'"
   },
   "dependencies": {
-    "aws-sdk": "^2.1085.0",
+    "aws-sdk": "^2.1226.0",
     "escape-json-node": "^2.0.1",
     "lodash": "^4.17.21",
     "luxon": "^2.3.1",

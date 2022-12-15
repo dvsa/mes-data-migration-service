@@ -336,7 +336,7 @@
         {
             "sourceName": "INTEGRITY_DETAILS",
             "removeColumns": [
-                "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON", "INTEGRITY_CASE_NUMBER", "ENTRY_DATE_TIME"
+                "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON"
             ]
         }
     ]

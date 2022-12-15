@@ -1,25 +1,25 @@
 {
     "sourceSchema": "TARSUAT",
     "destSchema": "tarsreplica",
-    "tables": [ 
+    "tables": [
         {
             "sourceName": "PROGRAMME",
-            "removeColumns": [ 
+            "removeColumns": [
                 "CHANGE_IND", "MODIFICATION_SEQ_NUMBER"
             ]
         },
         {
             "sourceName": "PROGRAMME_SLOT",
-            "removeColumns": [ 
+            "removeColumns": [
                 "STATE_CODE", "GHOST_IND", "SLOT_TYPE_CODE", "DEPLOYED_TO_FROM_TC_COST_CODE",
                 "CLOSURE_CODE", "REPEATED_CLOSURE_CODE", "SUSPENDED_IND", "DEPLOYMENT_ID",
-                "INSTRUCTOR_ID", "RESERVED_USER_NAME", "RESERVED_DATE_TIME", 
+                "INSTRUCTOR_ID", "RESERVED_USER_NAME", "RESERVED_DATE_TIME",
                 "CANCELLED_DEPLOYMENT_IND", "MODIFICATION_SEQ_NUMBER"
             ]
         },
         {
             "sourceName": "PERSONAL_COMMITMENT",
-            "removeColumns": [ 
+            "removeColumns": [
                 "COMMITMENT_TEXT", "STATE_CODE", "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON"
             ],
             "andFilters": [
@@ -33,11 +33,11 @@
         },
         {
             "sourceName": "DEPLOYMENT",
-            "removeColumns": [ 
-                "STATE_CODE", "REQUEST_DATE", "DEPLOYMENT_TYPE_CODE", "ALLOWED_TRAVEL_MINUTES", 
-                "AREA_ID", "AREA_DEPLOYMENT_NUMBER", "CANCELLED_DATE", "FINANCIAL_YEAR", 
-                "VERSION_NUMBER", "WELSH_IND", "COMMENTS_TEXT", "AREA_DECISION_DATE", 
-                "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON", "DEPLOYMENT_REASON_ID", 
+            "removeColumns": [
+                "STATE_CODE", "REQUEST_DATE", "DEPLOYMENT_TYPE_CODE", "ALLOWED_TRAVEL_MINUTES",
+                "AREA_ID", "AREA_DEPLOYMENT_NUMBER", "CANCELLED_DATE", "FINANCIAL_YEAR",
+                "VERSION_NUMBER", "WELSH_IND", "COMMENTS_TEXT", "AREA_DECISION_DATE",
+                "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON", "DEPLOYMENT_REASON_ID",
                 "NUM_CANCELLATIONS_SAVED"
             ],
             "andFilters": [
@@ -51,8 +51,13 @@
         },
         {
             "sourceName": "ETHNIC_ORIGIN",
-            "removeColumns": [ 
+            "removeColumns": [
                 "THEORY_NUMBER"
+            ]
+        },
+        {
+            "sourceName": "INTEGRITY_DETAILS",
+            "removeColumns": [
             ]
         }
     ]

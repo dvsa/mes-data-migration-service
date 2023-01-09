@@ -106,9 +106,13 @@ export class DmsApi {
     this.logger.debug(`${taskName} task status is ${status}`);
   }
 
-  private async createOrModifyFullLoadTask(taskName: string, replicationInstanceArn: string,
-                                           sourceEndpointArn: string, destEndpointArn: string,
-                                           tableMappings: string): Promise<string> {
+  private async createOrModifyFullLoadTask(
+    taskName: string,
+    replicationInstanceArn: string,
+    sourceEndpointArn: string,
+    destEndpointArn: string,
+    tableMappings: string,
+  ): Promise<string> {
     try {
       const taskArn = await this.getTaskArn(taskName);
       this.logger.debug(`Task ${taskName} already exists, so updating it...`);

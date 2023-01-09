@@ -48,40 +48,40 @@
         },
         {
             "sourceName": "EXAMINER",
-            "removeColumns": [ 
-                "PROB_PER_START_DATE", "PROB_PER_END_DATE", "DSA_BIKE_IND", "DSA_RADIO_IND", 
-                "WELSH_SPKG_CODE", "DEPLOY_IND", "NON_DEPLOY_TEXT", "SKILL_TEXT", "MAN_PROG_START_DATE", 
-                "MAN_PROG_END_DATE", "UPDATED_ON", "CREATED_ON", "UPDATED_BY", "CREATED_BY", 
+            "removeColumns": [
+                "PROB_PER_START_DATE", "PROB_PER_END_DATE", "DSA_BIKE_IND", "DSA_RADIO_IND",
+                "WELSH_SPKG_CODE", "DEPLOY_IND", "NON_DEPLOY_TEXT", "SKILL_TEXT", "MAN_PROG_START_DATE",
+                "MAN_PROG_END_DATE", "UPDATED_ON", "CREATED_ON", "UPDATED_BY", "CREATED_BY",
                 "MOBILE_IND", "EMAIL_JOURNALS_IND", "DVSA_EMAIL", "STOP_JOURNALS_IND"
             ]
         },
         {
             "sourceName": "EXAMINER_STATUS",
-            "removeColumns": [ 
+            "removeColumns": [
                 "EXAMINER_STATUS_TYPE_CODE", "CONTRACT_TYPE_CODE", "AREA_ID",
                 "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON"
             ]
         },
         {
             "sourceName": "INDIVIDUAL",
-            "removeColumns": [ 
-                "TEST_CENTRE_ID", "PREVIOUS_TEST_CENTRE_ID", "PERSON_INITIALS", "PERSON_FULL_NAME", 
-                "PERSON_REQUESTED_NAME", "VAT_REGISTERED", "DEFAULT_ADDRESS_CODE", "TOTAL_POINTS", 
-                "DATE_OF_FIRST_LICENCE", "LICENCE_EXPIRY_DATE", "LAST_UPDATED_BY_DVLA", "PP_STATUS_CODE", 
-                "PP_DATE_FIRST_ISSUED", "PP_CERTS_ISSUED", "PP_PACKS_ORDERED", "PP_DESPATCH_ADD", 
+            "removeColumns": [
+                "TEST_CENTRE_ID", "PREVIOUS_TEST_CENTRE_ID", "PERSON_INITIALS", "PERSON_FULL_NAME",
+                "PERSON_REQUESTED_NAME", "VAT_REGISTERED", "DEFAULT_ADDRESS_CODE", "TOTAL_POINTS",
+                "DATE_OF_FIRST_LICENCE", "LICENCE_EXPIRY_DATE", "LAST_UPDATED_BY_DVLA", "PP_STATUS_CODE",
+                "PP_DATE_FIRST_ISSUED", "PP_CERTS_ISSUED", "PP_PACKS_ORDERED", "PP_DESPATCH_ADD",
                 "PP_CONSENT_MARKER", "PP_STARTER_FEE_PAID", "BAD_DEBT_IND", "EXTERNAL_MAIL_CONSENT_IND",
-                "ID_CONFIRMATION_STATUS_CODE", "IS_ORGAN_DONOR", "IS_TITLE_ADDRESS", "DISABLED_MARKER", 
-                "DATE_OF_BIRTH_VERIFIED_CODE", "DATE_OF_DEATH", "NOTIFIED_DECEASED_CODE", "DATE_ENTERED", 
-                "DATE_MOVED", "COUNTRY_OF_BIRTH", "COUNTRY_OF_BIRTH_INTERNAL_CODE", "NATIONALITY_CODE", 
-                "PREFERRED_LANGUAGE_CODE", "REASON_CODE", "STATE_CODE", "COMMUNICATION_PREF_CODE", 
-                "NOTES", "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON", "INCREASE_FEE_IND", 
-                "BOOKING_REVIEW_IND", "INTEGRITY_IND", "NO_MAILINGS", "WEB_IND_CODE", 
+                "ID_CONFIRMATION_STATUS_CODE", "IS_ORGAN_DONOR", "IS_TITLE_ADDRESS", "DISABLED_MARKER",
+                "DATE_OF_BIRTH_VERIFIED_CODE", "DATE_OF_DEATH", "NOTIFIED_DECEASED_CODE", "DATE_ENTERED",
+                "DATE_MOVED", "COUNTRY_OF_BIRTH", "COUNTRY_OF_BIRTH_INTERNAL_CODE", "NATIONALITY_CODE",
+                "PREFERRED_LANGUAGE_CODE", "REASON_CODE", "STATE_CODE", "COMMUNICATION_PREF_CODE",
+                "NOTES", "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON", "INCREASE_FEE_IND",
+                "BOOKING_REVIEW_IND", "INTEGRITY_IND", "NO_MAILINGS", "WEB_IND_CODE",
                 "EU_LICENCE_IND", "DVLA_PHOTO_AUTH", "SC_PUBLISH_IND", "ETHNIC_ORIGIN_CODE"
             ]
         },
         {
             "sourceName": "REF_DATA_ITEM_MASTER",
-            "removeColumns": [ 
+            "removeColumns": [
                 "EXT_DESC", "VALID_FROM_DATE", "VALID_TO_DATE",
                 "PARENT_ITEM_ID", "SORTING_ORDER", "ACTIVE_FLG", "CREATED_BY", "CREATED_ON",
                 "UPDATED_BY", "UPDATED_ON", "DSA_UPDATABLE"
@@ -89,7 +89,7 @@
         },
         {
             "sourceName": "TEST_CENTRE",
-            "removeColumns": [ 
+            "removeColumns": [
                 "OPENING_TIME", "CLOSING_TIME", "COMMISSION_DATE", "DECOMMISSION_DATE",
                 "TC_TYPE_CODE", "MAIN_TEST_CENTRE_ID", "EXAMINER_CAPACITY_COUNT",
                 "TEST_ROUTE_CAPACITY_COUNT", "WAITING_ROOM_CAPACITY_COUNT", "FWD_PROGRAM_CREATE_WEEKS",
@@ -121,22 +121,22 @@
         },
         {
             "sourceName": "NON_TEST_ACTIVITY_REASON",
-            "removeColumns": [ 
-                "DEPLOYMENT_PRIORITY_NUMBER", "PAYABLE_IND", "WORK_PATTERN_IND", "CREATED_BY", 
-                "CREATED_ON", "UPDATED_BY", "UPDATED_ON", "START_DATE", "END_DATE", "QUALIFICATION_IND", 
+            "removeColumns": [
+                "DEPLOYMENT_PRIORITY_NUMBER", "PAYABLE_IND", "WORK_PATTERN_IND", "CREATED_BY",
+                "CREATED_ON", "UPDATED_BY", "UPDATED_ON", "START_DATE", "END_DATE", "QUALIFICATION_IND",
                 "SKILL_THRESHOLD_DAYS"
             ]
         },
         {
             "sourceName": "VEHICLE_SLOT_TYPE",
-            "removeColumns": [ 
-                "SHORT_VST_DESC", "MINUTES", "VST_DESC", "CREATED_ON", "CREATED_BY", 
+            "removeColumns": [
+                "SHORT_VST_DESC", "MINUTES", "VST_DESC", "CREATED_ON", "CREATED_BY",
                 "UPDATED_ON", "UPDATED_BY"
             ]
         },
         {
             "sourceName": "BOOKING",
-            "removeColumns": [ 
+            "removeColumns": [
                 "ACTUAL_TEST_FEE_AMOUNT", "BOOKED_DATE", "CANCELLED_DATE_TIME", "CANCELLED_TC_ID", "LOST_FEE_IND",
                 "NO_CANCEL_ACCEPT_IND", "NON_COMPLETION_CODE", "RETEST_REFUND_IND", "TEST_SERVICE_ITEM_ID",
                 "INCOME_ACCRUED_IND", "FULL_TEST_FEE_AMOUNT", "EXPECTED_TEST_FEE_AMOUNT", "ACCRUED_FIN_TRAN_ID",
@@ -329,6 +329,12 @@
         },
         {
             "sourceName": "APP_SYSTEM_PARAMETER",
+            "removeColumns": [
+                "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON"
+            ]
+        },
+        {
+            "sourceName": "INTEGRITY_DETAILS",
             "removeColumns": [
                 "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON"
             ]

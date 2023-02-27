@@ -90,7 +90,7 @@
         {
             "sourceName": "TEST_CENTRE",
             "removeColumns": [
-                "OPENING_TIME", "CLOSING_TIME", "COMMISSION_DATE", "DECOMMISSION_DATE",
+                "OPENING_TIME", "CLOSING_TIME",
                 "TC_TYPE_CODE", "MAIN_TEST_CENTRE_ID", "EXAMINER_CAPACITY_COUNT",
                 "TEST_ROUTE_CAPACITY_COUNT", "WAITING_ROOM_CAPACITY_COUNT", "FWD_PROGRAM_CREATE_WEEKS",
                 "DIRECTION_TEXT", "BAD_WEATHER_INSTR_TEXT", "MALE_WC_COUNT", "FEMALE_WC_COUNT",

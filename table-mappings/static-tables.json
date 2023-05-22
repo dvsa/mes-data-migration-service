@@ -140,7 +140,7 @@
                 "ACTUAL_TEST_FEE_AMOUNT", "BOOKED_DATE", "CANCELLED_DATE_TIME", "CANCELLED_TC_ID", "LOST_FEE_IND",
                 "NO_CANCEL_ACCEPT_IND", "NON_COMPLETION_CODE", "RETEST_REFUND_IND", "TEST_SERVICE_ITEM_ID",
                 "INCOME_ACCRUED_IND", "FULL_TEST_FEE_AMOUNT", "EXPECTED_TEST_FEE_AMOUNT", "ACCRUED_FIN_TRAN_ID",
-                "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON", "RESOURCE_SLOT_ID"
+                "CREATED_BY", "UPDATED_BY", "UPDATED_ON", "RESOURCE_SLOT_ID"
             ]
         },
         {
@@ -201,11 +201,11 @@
         {
             "sourceName": "REGISTER",
             "removeColumns": [
-                "REGISTER_ID", "ORGANISATION_ID", "REGISTER_CODE", "APPLICATION_DATE", "COMMENCEMENT_DATE",
+                "REGISTER_ID", "APPLICATION_DATE", "COMMENCEMENT_DATE",
                 "CURRENT_CERTIFICATE", "CERTIFICATE_PREFIX", "CERTIFICATE_SUFFIX", "CERTIFICATE_NUMBER",
                 "DATE_OF_ISSUE", "DATE_OF_EXPIRY", "REFUSAL_REASON_CODE", "REASON_FOR_REFUSAL",
                 "DATE_OF_REFUSAL", "DATE_OF_REMOVAL", "REVOKED_REASON_CODE", "DATE_REVOKED",
-                "DATE_OF_REJECTION", "RENEWAL_DETAILS",	"DATE_CERTIFICATE_RETURNED", "LAST_CHECK_TEST_DATE",
+                "DATE_OF_REJECTION", "RENEWAL_DETAILS",	"DATE_CERTIFICATE_RETURNED",
                 "STATUS_CODE", "PREVIOUS_STATUS_CODE", "CONSENT_STATUS_CODE", "CBT_CAT_A_LICENCE_FULL",
                 "CBT_PARTNER", "CBT_CARDINGTON_TRAINED", "CBT_MAIN_TRAINING_SITE_ID", "CBT_DOWN_TRAINED",
                 "CBT_SUPERVISE_LARGE_MC", "CBT_LAST_INVOLVED_TRAINING",	"ATB_AUTHORISED_BY", "DATE_AUTHORISED",
@@ -238,7 +238,7 @@
         {
             "sourceName": "ORGANISATION_REGISTER",
             "removeColumns": [
-                "REGISTER_CODE", "BRN", "TRAINING_OFFERED_CODE", "TYPES_OF_COURSE_CODE", "APPLICATION_DATE",
+                "TRAINING_OFFERED_CODE", "TYPES_OF_COURSE_CODE", "APPLICATION_DATE",
                 "PREFERRED_TEST_CENTRE_ID", "CONSENT_STATUS_CODE", "STATUS_CODE", "COMMENTS", "CREATED_ON",
                 "CREATED_BY", "UPDATED_ON", "UPDATED_BY", "CURRENT_CERTIFICATE", "CERTIFICATE_PREFIX",
                 "CERTIFICATE_SUFFIX", "CERTIFICATE_NUMBER", "DATE_AUTHORISED", "DATE_OF_ISSUE", "DATE_OF_EXPIRY",
@@ -274,9 +274,9 @@
         {
             "sourceName": "TEST_HISTORY",
             "removeColumns": [
-                "HISTORY_ID", "ORGANISATION_ID", "REGISTER_ID", "APPLICATION_ID", "CREATED_BY", "CREATED_ON",
-                "UPDATED_BY", "UPDATED_ON", "MARK", "CERTIFICATE_NUMBER", "HPT_CERT_NUMBER", "SOURCE_FILE",
-                "ACTIVE_FLAG", "CHANGE_IND", "THEORY_PASS_DATE_NEGATED", "GRADE_ID", "BOOKING_ID"
+                "HISTORY_ID", "ORGANISATION_ID", "CREATED_BY", "CREATED_ON",
+                "UPDATED_BY", "CERTIFICATE_NUMBER", "HPT_CERT_NUMBER", "SOURCE_FILE",
+                "ACTIVE_FLAG", "CHANGE_IND", "THEORY_PASS_DATE_NEGATED",
             ]
         },
         {
@@ -337,6 +337,16 @@
             "sourceName": "INTEGRITY_DETAILS",
             "removeColumns": [
                 "CREATED_BY", "CREATED_ON", "UPDATED_BY", "UPDATED_ON"
+            ]
+        },
+        {
+            "sourceName": "TEST_RESULT_GRADE",
+            "removeColumns": [
+            ]
+        },
+        {
+            "sourceName": "SUPERVISING_EXAMINERS",
+            "removeColumns": [
             ]
         }
     ]

@@ -11,7 +11,7 @@
         {
             "sourceName": "PROGRAMME_SLOT",
             "removeColumns": [ 
-                "STATE_CODE", "GHOST_IND", "SLOT_TYPE_CODE", "DEPLOYED_TO_FROM_TC_COST_CODE",
+                "STATE_CODE", "SLOT_TYPE_CODE", "DEPLOYED_TO_FROM_TC_COST_CODE",
                 "CLOSURE_CODE", "REPEATED_CLOSURE_CODE", "SUSPENDED_IND", "DEPLOYMENT_ID",
                 "INSTRUCTOR_ID", "RESERVED_USER_NAME", "RESERVED_DATE_TIME", 
                 "CANCELLED_DEPLOYMENT_IND", "MODIFICATION_SEQ_NUMBER"
@@ -53,6 +53,11 @@
             "sourceName": "ETHNIC_ORIGIN",
             "removeColumns": [ 
                 "THEORY_NUMBER"
+            ]
+        },
+        {
+            "sourceName": "CHECK_TEST",
+            "removeColumns": [
             ]
         }
     ]

@@ -348,6 +348,11 @@
             "sourceName": "SUPERVISING_EXAMINERS",
             "removeColumns": [
             ]
+        },
+        {
+            "sourceName": "CHECK_TEST",
+            "removeColumns": [
+            ]
         }
     ]
 }

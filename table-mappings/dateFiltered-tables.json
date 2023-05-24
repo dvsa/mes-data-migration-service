@@ -54,11 +54,6 @@
             "removeColumns": [ 
                 "THEORY_NUMBER"
             ]
-        },
-        {
-            "sourceName": "CHECK_TEST",
-            "removeColumns": [
-            ]
         }
     ]
 }

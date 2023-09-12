@@ -12,6 +12,7 @@
   "scripts": {
     "clean": "rimraf build artefacts",
     "compile": "tsc",
+    "compile-no-emit": "tsc --noEmit -p .",
     "e2e": "run-s clean compile stack:up features stack:down",
     "features": "cucumber-js e2e/ --require 'build/e2e/**/*.js' --tags 'not @skip'",
     "lint": "eslint -c .eslintrc.js --ext .ts src",

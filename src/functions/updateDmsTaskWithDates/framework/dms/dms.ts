@@ -56,6 +56,7 @@ export class DmsApi {
         ReplicationTaskArn: taskArn,
       };
 
+      this.logger.debug(`Trying to stop: ${taskName}`);
       const data = await this.dms.stopReplicationTask(params).promise();
       return data.ReplicationTask.Status;
     } catch (err) {
@@ -179,7 +180,9 @@ export class DmsApi {
         TableMappings: escapeJSON(tableMappings),
       };
 
+      this.logger.debug('Modifying Replication Task');
       const data = await this.dms.modifyReplicationTask(params).promise();
+      this.logger.debug('Modifying Complete');
       return data.ReplicationTask.Status;
     } catch (err) {
       this.logger.error(
@@ -212,7 +215,9 @@ export class DmsApi {
 
     do {
       await this.delay(retryDelay);
+      this.logger.debug(`Waiting for ${taskName} to stop. Attempt: ${retryCount}`);
       status = await this.getTaskStatus(taskName);
+      this.logger.debug(`${taskName} task status is ${status}`);
       retryCount = retryCount + 1;
     } while (status !== 'stopped' && retryCount < maxRetries);
   }

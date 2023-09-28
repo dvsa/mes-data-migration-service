@@ -45,12 +45,13 @@ async function stopTaskIfExistsAndRunning(taskName: string, dms: DmsApi, logger:
   let taskStatus = '';
   try {
     taskStatus = await dms.getTaskStatus(taskName);
+    logger.debug(`Current status of ${taskName} is ${taskStatus}`);
   } catch (error) {
     logger.debug(`taskname ${taskName} doesn't exist`);
-    taskStatus = 'nonexistant';
+    taskStatus = 'nonexistent';
   }
 
-  if (taskStatus !== 'stopped' && taskStatus !== 'nonexistant') {
+  if (taskStatus !== 'stopped' && taskStatus !== 'nonexistent') {
     try {
       const stopStatus = await dms.stopTask(taskName);
       logger.debug(`status of stopTask is ${stopStatus}`);

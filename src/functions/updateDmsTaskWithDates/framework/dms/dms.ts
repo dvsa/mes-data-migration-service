@@ -8,6 +8,8 @@ import { config } from '../config/config';
 import { getDmsOptions } from '../config/options';
 import { getTaskSettings } from '../config/task-settings';
 import { ILogger } from '../logging/Ilogger';
+import { TaskStatus } from '../../../../common/application/api/TaskStatus';
+
 type UpdateTableMappingCallback = (options: Options) => void;
 
 export class DmsApi {
@@ -219,7 +221,7 @@ export class DmsApi {
       status = await this.getTaskStatus(taskName);
       this.logger.debug(`${taskName} task status is ${status}`);
       retryCount = retryCount + 1;
-    } while (status !== 'stopped' && retryCount < maxRetries);
+    } while (status !== TaskStatus.STOPPED && retryCount < maxRetries);
   }
 
   private delay(ms: number) {

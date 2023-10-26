@@ -4,6 +4,7 @@ import { DateTime, Duration } from 'luxon';
 import { config } from './config/config';
 import { ILogger } from './logging/Ilogger';
 import { ConsoleLogger } from './logging/console-logger';
+import { TaskStatus } from '../../../common/application/api/TaskStatus';
 
 const logger = new ConsoleLogger();
 
@@ -24,33 +25,41 @@ export const modifyTask = async (): Promise<void> => {
 
   const dateTaskName = `${environmentPrefix}-${dateFilteredTaskName}`;
 
-  await stopTaskIfExistsAndRunning(dateTaskName, dms, logger);
+  const taskStatus = await stopTaskIfExistsAndRunning(dateTaskName, dms, logger);
 
-  await dms.createOrModifyTask(dateTaskName,
-                               replicationInstanceArn,
-                               sourceArn,
-                               targetArn,
-                               addDateFilters);
+  // prevent function from being called if already modifying
+  if (taskStatus !== TaskStatus.MODIFYING) {
+    await dms.createOrModifyTask(dateTaskName,
+                                 replicationInstanceArn,
+                                 sourceArn,
+                                 targetArn,
+                                 addDateFilters);
+  }
 
   await startTaskWhenReady(dateTaskName, dms, logger);
 };
 
 async function startTaskWhenReady(taskName: string, dms: DmsApi, logger: ILogger) {
-  await dms.waitForDesiredTaskStatus(taskName, ['ready', 'stopped']);
+  await dms.waitForDesiredTaskStatus(taskName, [TaskStatus.READY, TaskStatus.STOPPED]);
   const startStatus = await dms.startTask(taskName, 'reload-target');
   logger.debug(`status of startTask is ${startStatus}`);
 
 }
-async function stopTaskIfExistsAndRunning(taskName: string, dms: DmsApi, logger: ILogger) {
+async function stopTaskIfExistsAndRunning(taskName: string, dms: DmsApi, logger: ILogger): Promise<string> {
   let taskStatus = '';
   try {
     taskStatus = await dms.getTaskStatus(taskName);
+    logger.debug(`Current status of ${taskName} is ${taskStatus}`);
   } catch (error) {
     logger.debug(`taskname ${taskName} doesn't exist`);
-    taskStatus = 'nonexistant';
+    taskStatus = TaskStatus.NON_EXISTENT;
   }
 
-  if (taskStatus !== 'stopped' && taskStatus !== 'nonexistant') {
+  // guard to protect task from being interacted with when in an inappropriate state
+  if (taskStatus !== TaskStatus.STOPPED &&
+    taskStatus !== TaskStatus.MODIFYING &&
+    taskStatus !== TaskStatus.NON_EXISTENT
+  ) {
     try {
       const stopStatus = await dms.stopTask(taskName);
       logger.debug(`status of stopTask is ${stopStatus}`);
@@ -59,6 +68,8 @@ async function stopTaskIfExistsAndRunning(taskName: string, dms: DmsApi, logger:
       logger.error(error);
     }
   }
+
+  return taskStatus;
 }
 /**
  * Adds source filters to the "datefiltered" dataset.

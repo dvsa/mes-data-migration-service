@@ -26,11 +26,13 @@ export const modifyTask = async (): Promise<void> => {
 
   await stopTaskIfExistsAndRunning(dateTaskName, dms, logger);
 
-  await dms.createOrModifyTask(dateTaskName,
-                               replicationInstanceArn,
-                               sourceArn,
-                               targetArn,
-                               addDateFilters);
+  await dms.createOrModifyTask(
+    dateTaskName,
+    replicationInstanceArn,
+    sourceArn,
+    targetArn,
+    addDateFilters,
+  );
 
   await startTaskWhenReady(dateTaskName, dms, logger);
 };

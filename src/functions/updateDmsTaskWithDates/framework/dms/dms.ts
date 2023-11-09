@@ -1,7 +1,17 @@
 /**
  * Wraps the AWS DMS API.
  */
-import * as DMS from 'aws-sdk/clients/dms'; // just the DMS apis, not the whole SDK
+// just the DMS apis, not the whole SDK
+
+import {
+  CreateReplicationTaskCommand,
+  CreateReplicationTaskCommandInput,
+  DatabaseMigrationService,
+  DescribeReplicationTasksCommand,
+  ModifyReplicationTaskCommand,
+  StartReplicationTaskCommand,
+  StopReplicationTaskCommand,
+} from '@aws-sdk/client-database-migration-service';
 import * as escapeJSON from 'escape-json-node';
 import { generateTableMapping, Options } from './table-mapping';
 import { config } from '../config/config';
@@ -11,26 +21,29 @@ import { ILogger } from '../logging/Ilogger';
 type UpdateTableMappingCallback = (options: Options) => void;
 
 export class DmsApi {
-  private dms: DMS;
+  private dms: DatabaseMigrationService;
 
   constructor(
     readonly region: string,
     private logger: ILogger,
   ) {
-    this.dms = new DMS({ apiVersion: '2016-01-01', region: `${region}` });
+    this.dms = new DatabaseMigrationService({ apiVersion: '2016-01-01', region: `${region}` });
   }
 
   async getTaskStatus(taskName: string): Promise<string> {
     const taskArn = await this.getTaskArn(taskName);
 
     try {
-      const params: DMS.Types.DescribeReplicationTasksMessage = {
+      const params = {
         Filters: [
           { Name: 'replication-task-arn', Values: [taskArn] },
         ],
       };
 
-      const data = await this.dms.describeReplicationTasks(params).promise();
+      const data = await this.dms.send(
+        new DescribeReplicationTasksCommand(params)
+      );
+
       return data.ReplicationTasks[0].Status;
 
     } catch (err) {
@@ -56,7 +69,10 @@ export class DmsApi {
         ReplicationTaskArn: taskArn,
       };
 
-      const data = await this.dms.stopReplicationTask(params).promise();
+      const data = await this.dms.send(
+        new StopReplicationTaskCommand(params)
+      );
+
       return data.ReplicationTask.Status;
     } catch (err) {
       this.logger.error(
@@ -78,7 +94,10 @@ export class DmsApi {
         StartReplicationTaskType: taskType,
       };
 
-      const data = await this.dms.startReplicationTask(params).promise();
+      const data = await this.dms.send(
+        new StartReplicationTaskCommand(params)
+      );
+
       return data.ReplicationTask.Status;
     } catch (err) {
       this.logger.error(
@@ -92,17 +111,26 @@ export class DmsApi {
     }
   }
 
-  async createOrModifyTask(taskName: string, replicationInstanceArn: string,
-                           sourceEndpointArn: string, destEndpointArn: string,
-                           callback?: UpdateTableMappingCallback): Promise<void> {
+  async createOrModifyTask(
+    taskName: string,
+    replicationInstanceArn: string,
+    sourceEndpointArn: string,
+    destEndpointArn: string,
+    callback?: UpdateTableMappingCallback,
+  ): Promise<void> {
     const tableMappingInput: Options = getDmsOptions();
     if (callback) {
       callback(tableMappingInput);
     }
     const tableMapping = JSON.stringify(generateTableMapping(tableMappingInput));
 
-    const status = await this.createOrModifyFullLoadTask(taskName, replicationInstanceArn,
-                                                         sourceEndpointArn, destEndpointArn, tableMapping);
+    const status = await this.createOrModifyFullLoadTask(
+      taskName,
+      replicationInstanceArn,
+      sourceEndpointArn,
+      destEndpointArn,
+      tableMapping
+    );
     this.logger.debug(`${taskName} task status is ${status}`);
   }
 
@@ -141,10 +169,13 @@ export class DmsApi {
     }
   }
 
-  private async createFullLoadTask(taskName: string, replicationInstanceArn: string,
-                                   sourceEndpointArn: string, destEndpointArn: string,
-                                   tableMappings: string): Promise<string> {
-
+  private async createFullLoadTask(
+    taskName: string,
+    replicationInstanceArn: string,
+    sourceEndpointArn: string,
+    destEndpointArn: string,
+    tableMappings: string,
+  ): Promise<string> {
     try {
       const params = {
         MigrationType: 'full-load-and-cdc',
@@ -154,9 +185,12 @@ export class DmsApi {
         SourceEndpointArn: sourceEndpointArn,
         TableMappings: escapeJSON(tableMappings),
         TargetEndpointArn: destEndpointArn,
-      };
+      } as CreateReplicationTaskCommandInput;
 
-      const data = await this.dms.createReplicationTask(params).promise();
+      const data = await this.dms.send(
+        new CreateReplicationTaskCommand(params)
+      );
+
       return data.ReplicationTask.Status;
     } catch (err) {
       this.logger.error(
@@ -179,7 +213,10 @@ export class DmsApi {
         TableMappings: escapeJSON(tableMappings),
       };
 
-      const data = await this.dms.modifyReplicationTask(params).promise();
+      const data = await this.dms.send(
+        new ModifyReplicationTaskCommand(params)
+      );
+
       return data.ReplicationTask.Status;
     } catch (err) {
       this.logger.error(
@@ -230,7 +267,10 @@ export class DmsApi {
         }],
       };
 
-      const data = await this.dms.describeReplicationTasks(params).promise();
+      const data = await this.dms.send(
+        new DescribeReplicationTasksCommand(params)
+      );
+
       return data.ReplicationTasks[0].ReplicationTaskArn;
     } catch (err) {
       if (err.code !== 'ResourceNotFoundFault') {

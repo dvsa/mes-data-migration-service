@@ -1,7 +1,7 @@
-import { config } from '../config/config';
+import { config } from './config';
 import { Options } from '../dms/table-mapping';
 
-const dmsOptions = {
+export const dmsOptions = {
   destSchema: 'tarsreplica',
   tables: [
     {

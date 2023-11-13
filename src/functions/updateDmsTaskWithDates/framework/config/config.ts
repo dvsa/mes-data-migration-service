@@ -1,4 +1,4 @@
-import { throwIfNotPresent } from '../../../../common/framework/config/config-helpers';
+import { throwIfNotPresent } from '@dvsa/mes-microservice-common/framework/config/config';
 
 export type Config = {
   maxRetries: number;

@@ -6,7 +6,7 @@
 import {
   CreateReplicationTaskCommand,
   CreateReplicationTaskCommandInput,
-  DatabaseMigrationService,
+  DatabaseMigrationServiceClient,
   DescribeReplicationTasksCommand,
   ModifyReplicationTaskCommand,
   StartReplicationTaskCommand,
@@ -17,23 +17,22 @@ import { generateTableMapping, Options } from './table-mapping';
 import { config } from '../config/config';
 import { getDmsOptions } from '../config/options';
 import { getTaskSettings } from '../config/task-settings';
-import { ILogger } from '../logging/Ilogger';
+import { debug, error } from '@dvsa/mes-microservice-common/application/utils/logger';
 type UpdateTableMappingCallback = (options: Options) => void;
 
 export class DmsApi {
-  private dms: DatabaseMigrationService;
+  private dms: DatabaseMigrationServiceClient;
 
   constructor(
     readonly region: string,
-    private logger: ILogger,
   ) {
-    this.dms = new DatabaseMigrationService({ apiVersion: '2016-01-01', region: `${region}` });
+    this.dms = new DatabaseMigrationServiceClient({ apiVersion: '2016-01-01', region: `${region}` });
   }
 
   async getTaskStatus(taskName: string): Promise<string> {
-    const taskArn = await this.getTaskArn(taskName);
-
     try {
+      const taskArn = await this.getTaskArn(taskName);
+
       const params = {
         Filters: [
           { Name: 'replication-task-arn', Values: [taskArn] },
@@ -48,9 +47,10 @@ export class DmsApi {
 
     } catch (err) {
       if (err.code === 'ResourceNotFoundFault') {
-        this.logger.error({ err: { name: err.code, message: `Replication Instance ${taskName}` } });
+        error('ResourceNotFoundFault', { err: { name: err.code, message: `Replication Instance ${taskName}` } });
       } else {
-        this.logger.error(
+        error(
+          'Unknown getTaskStatus',
           {
             err: {
               name: err.code,
@@ -63,8 +63,9 @@ export class DmsApi {
   }
 
   async stopTask(taskName: string): Promise<string> {
-    const taskArn = await this.getTaskArn(taskName);
     try {
+      const taskArn = await this.getTaskArn(taskName);
+
       const  params = {
         ReplicationTaskArn: taskArn,
       };
@@ -75,7 +76,8 @@ export class DmsApi {
 
       return data.ReplicationTask.Status;
     } catch (err) {
-      this.logger.error(
+      error(
+        'Unknown stopTask error',
         {
           err: {
             name: err.code,
@@ -87,8 +89,9 @@ export class DmsApi {
   }
 
   async startTask(taskName: string, taskType: 'start-replication' | 'resume-processing' | 'reload-target') {
-    const taskArn = await this.getTaskArn(taskName);
     try {
+      const taskArn = await this.getTaskArn(taskName);
+
       const params = {
         ReplicationTaskArn: taskArn,
         StartReplicationTaskType: taskType,
@@ -100,7 +103,8 @@ export class DmsApi {
 
       return data.ReplicationTask.Status;
     } catch (err) {
-      this.logger.error(
+      error(
+        'Unknown startTask error',
         {
           err: {
             name: err.code,
@@ -131,7 +135,7 @@ export class DmsApi {
       destEndpointArn,
       tableMapping
     );
-    this.logger.debug(`${taskName} task status is ${status}`);
+    debug(`${taskName} task status is ${status}`);
   }
 
   private async createOrModifyFullLoadTask(
@@ -143,12 +147,12 @@ export class DmsApi {
   ): Promise<string> {
     try {
       const taskArn = await this.getTaskArn(taskName);
-      this.logger.debug(`Task ${taskName} already exists, so updating it...`);
+      debug(`Task ${taskName} already exists, so updating it...`);
       return await this.updateTask(taskArn, tableMappings);
 
     } catch (e) {
       if (e.code === 'ResourceNotFoundFault') {
-        this.logger.debug(`Task ${taskName} doesn\'t already exist, so creating it...`);
+        debug(`Task ${taskName} doesn\'t already exist, so creating it...`);
         return await this.createFullLoadTask(
           taskName,
           replicationInstanceArn,
@@ -157,7 +161,8 @@ export class DmsApi {
           tableMappings,
         );
       }
-      this.logger.error(
+      error(
+        'Unknown createOrModifyFullLoadTask error',
         {
           err: {
             name: e.code,
@@ -193,7 +198,8 @@ export class DmsApi {
 
       return data.ReplicationTask.Status;
     } catch (err) {
-      this.logger.error(
+      error(
+        'Error calling createReplicationTask',
         {
           err: {
             name: err.code,
@@ -219,7 +225,8 @@ export class DmsApi {
 
       return data.ReplicationTask.Status;
     } catch (err) {
-      this.logger.error(
+      error(
+        'Unknown updateTask error',
         {
           err: {
             name: err.code,
@@ -274,7 +281,8 @@ export class DmsApi {
       return data.ReplicationTasks[0].ReplicationTaskArn;
     } catch (err) {
       if (err.code !== 'ResourceNotFoundFault') {
-        this.logger.error(
+        error(
+          'Unknown getTaskArn error',
           {
             err: {
               name: err.code,

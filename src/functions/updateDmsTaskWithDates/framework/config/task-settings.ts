@@ -1,5 +1,3 @@
-import { config } from '../config/config';
-
 const taskSettings = {
   TargetMetadata: {
     TargetSchema: '',
@@ -28,4 +26,4 @@ const taskSettings = {
   },
 };
 
-export const getTaskSettings = (): any => taskSettings;
+export const getTaskSettings = () => taskSettings;

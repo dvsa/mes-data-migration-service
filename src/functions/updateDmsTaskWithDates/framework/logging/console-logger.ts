@@ -1,19 +1,20 @@
+import loggers from '@dvsa/mes-microservice-common/application/utils/logger';
 import { ILogger } from  './Ilogger';
 import { Error } from './error';
 
 export class ConsoleLogger implements ILogger {
 
   error = (error: Error) => {
-    console.log(JSON.stringify(error));
+    loggers.error(JSON.stringify(error));
   };
   warn = (message: string) => {
-    console.log(`warn: ${message}`);
+    loggers.warn(`${message}`);
   };
   info = (message: string) => {
-    console.log(`info: ${message}`);
+    loggers.info(`${message}`);
   };
   debug = (message: string) => {
-    console.log(`debug: ${message}`);
+    loggers.debug(`${message}`);
   };
 
 }

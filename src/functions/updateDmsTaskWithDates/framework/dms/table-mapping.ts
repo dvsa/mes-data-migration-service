@@ -1,8 +1,8 @@
 /**
  * Handles generating DMS table mappings from a much simpler logical input.
  */
-import { DateTime } from 'luxon';
-import { ILogger } from '../logging/Ilogger';
+import {DateTime} from 'luxon';
+import {info} from '@dvsa/mes-microservice-common/application/utils/logger';
 
 export interface OrCondition {
   operator: string;
@@ -28,11 +28,42 @@ export interface Options {
   tables: Table[];
 }
 
-export interface TableMapping {
-  rules: any[];
+interface ObjectLocator {
+  'schema-name'?: string;
+  'table-name'?: string;
+  'column-name'?: string;
 }
+
+interface FilterCondition {
+  'filter-operator'?: string;
+  'start-value'?: string;
+  'end-value'?: string;
+  'value'?: string;
+}
+
+interface Filter {
+  'filter-type': string;
+  'column-name': string;
+  'filter-conditions': FilterCondition[];
+}
+
+export interface Rule {
+  'rule-type': string;
+  'rule-id': string;
+  'rule-name': string;
+  'rule-action': string;
+  'rule-target'?: string;
+  'object-locator': ObjectLocator;
+  'value': string;
+  'filters': Filter[];
+}
+
+export interface TableMapping {
+  rules: Rule[];
+}
+
 export function generateTableMapping(options: Options): TableMapping {
-  const config:TableMapping = { rules: [] };
+  const config: TableMapping = { rules: [] };
 
   // first add a transformation rule from source to dest schema name...
   config.rules.push({
@@ -45,34 +76,33 @@ export function generateTableMapping(options: Options): TableMapping {
       'schema-name': options.sourceSchema,
     },
     value: options.destSchema,
-  });
+  } as Rule);
 
   let index = 2; // rule 1 is above
   options.tables.forEach((element: Table) => {
     // then add include selection rules for every table...
-    const rule: any = {
+    const rule = {
       'rule-type': 'selection',
       'rule-id': `${index}`,
       'rule-name': `${index}`,
+      'rule-action': 'include',
       'object-locator': {
         'schema-name': options.sourceSchema,
         'table-name': element.sourceName,
       },
-      'rule-action': 'include',
-    };
+    } as Rule;
+
     if (element.andFilters) {
       rule['filters'] = [];
 
       const filters = addAndFilters(element);
       rule['filters'] = [...filters];
-
     }
 
     config.rules.push(rule);
     index += 1;
 
     if (element.removeColumns) {
-
       const removalResult = addRemovecolumns(index, options.sourceSchema, element.sourceName, element.removeColumns);
       config.rules = [...config.rules, ...removalResult.rules];
       index = removalResult.index;
@@ -82,10 +112,17 @@ export function generateTableMapping(options: Options): TableMapping {
   return config;
 }
 
-function addRemovecolumns(index: number, sourceSchema:string, sourceName:string, removeColumns: string[]): any {
-  const removeRules: any[] = [];
-  let localIndex:number = index;
-  removeColumns.forEach((column:string) => {
+function addRemovecolumns(
+  index: number,
+  sourceSchema: string,
+  sourceName: string,
+  removeColumns: string[],
+): { index: number; rules: Rule[] } {
+
+  const removeRules: Rule[] = [];
+  let localIndex: number = index;
+
+  removeColumns.forEach((column: string) => {
     const removeRule = {
       'rule-type': 'transformation',
       'rule-id': `${localIndex}`,
@@ -97,22 +134,23 @@ function addRemovecolumns(index: number, sourceSchema:string, sourceName:string,
         'table-name': sourceName,
         'column-name': column,
       },
-    };
+    } as Rule;
     removeRules.push(removeRule);
     localIndex += 1;
   });
-  return { index: localIndex, rules: removeRules };
+  return {index: localIndex, rules: removeRules};
 }
 
-function addAndFilters(element:Table):any {
+function addAndFilters(element: Table): Filter[] {
   // then add include selection rules for every table...
-  const allFilters: any[] = [];
+  const allFilters: Filter[] = [];
+
   element.andFilters.forEach((andFilter: AndFilter) => {
-    const filter: any = {
+    const filter = {
       'filter-type': 'source',
       'column-name': andFilter.column,
       'filter-conditions': [],
-    };
+    } as Filter;
 
     const filterConditions = addOrCondition(andFilter.orConditions);
     filter['filter-conditions'] = [...filterConditions];
@@ -122,9 +160,9 @@ function addAndFilters(element:Table):any {
   return allFilters;
 }
 
-function addOrCondition(orConditions: OrCondition[]): any {
+function addOrCondition(orConditions: OrCondition[]): FilterCondition[] {
+  const filterConditions: FilterCondition[] = [];
 
-  const filterConditions : any[] = [];
   orConditions.forEach((condition: OrCondition) => {
     if (condition.start) {
       // filter with two values
@@ -154,12 +192,13 @@ function findFilters(options: Options, tableName: string): AndFilter[] {
   return andFilters;
 }
 
-export function addBetweenFilter(options: Options,
-                                 tableName: string,
-                                 columnName: string,
-                                 start: DateTime,
-                                 end: DateTime,
-                                 logger: ILogger) {
+export function addBetweenFilter(
+  options: Options,
+  tableName: string,
+  columnName: string,
+  start: DateTime,
+  end: DateTime,
+) {
   const filter = {
     column: columnName,
     orConditions: [{
@@ -169,14 +208,15 @@ export function addBetweenFilter(options: Options,
     }],
   };
   findFilters(options, tableName).push(filter);
-  logger.debug(`Filtering ${tableName} on ${columnName} from ${start.toISODate()} to ${end.toISODate()}`);
+  info(`Filtering ${tableName} on ${columnName} from ${start.toISODate()} to ${end.toISODate()}`);
 }
 
-export function addOnOrAfterFilter(options: Options,
-                                   tableName: string,
-                                   columnName: string,
-                                   value: DateTime,
-                                   logger: ILogger) {
+export function addOnOrAfterFilter(
+  options: Options,
+  tableName: string,
+  columnName: string,
+  value: DateTime,
+) {
   const filter = {
     column: columnName,
     orConditions: [{
@@ -185,14 +225,15 @@ export function addOnOrAfterFilter(options: Options,
     }],
   };
   findFilters(options, tableName).push(filter);
-  logger.debug(`Filtering ${tableName} on ${columnName} on or after ${value.toISODate()}`);
+  info(`Filtering ${tableName} on ${columnName} on or after ${value.toISODate()}`);
 }
 
-export function addOnOrBeforeFilter(options: Options,
-                                    tableName: string,
-                                    columnName: string,
-                                    value: DateTime,
-                                    logger: ILogger) {
+export function addOnOrBeforeFilter(
+  options: Options,
+  tableName: string,
+  columnName: string,
+  value: DateTime,
+) {
   const filter = {
     column: columnName,
     orConditions: [{
@@ -201,5 +242,5 @@ export function addOnOrBeforeFilter(options: Options,
     }],
   };
   findFilters(options, tableName).push(filter);
-  logger.debug(`Filtering ${tableName} on ${columnName} on or before ${value.toISO()}`);
+  info(`Filtering ${tableName} on ${columnName} on or before ${value.toISO()}`);
 }

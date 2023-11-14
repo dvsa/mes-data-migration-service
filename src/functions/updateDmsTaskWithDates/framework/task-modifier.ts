@@ -2,13 +2,12 @@ import { DmsApi } from './dms/dms';
 import { addBetweenFilter, addOnOrAfterFilter, addOnOrBeforeFilter, Options } from './dms/table-mapping';
 import { DateTime, Duration } from 'luxon';
 import { config } from './config/config';
-import { ILogger } from './logging/Ilogger';
-import { ConsoleLogger } from './logging/console-logger';
+import { error, info } from '@dvsa/mes-microservice-common/application/utils/logger';
 
-const logger = new ConsoleLogger();
 
-export const modifyTask = async (): Promise<void> => {
-  const { dateFilteredTaskName,
+export const modifyTask = async (): Promise<string> => {
+  const {
+    dateFilteredTaskName,
     environmentPrefix,
     sourceArn,
     targetArn,
@@ -16,15 +15,15 @@ export const modifyTask = async (): Promise<void> => {
     awsRegion,
   } = config();
 
-  const dms = new DmsApi(awsRegion, logger);
-
-  logger.debug(`source endpoint arn is ${sourceArn}`);
-  logger.debug(`dest endpoint arn is ${targetArn}`);
-  logger.debug(`repl instance arn is ${replicationInstanceArn}`);
+  info(`source endpoint arn is ${sourceArn}`);
+  info(`dest endpoint arn is ${targetArn}`);
+  info(`repl instance arn is ${replicationInstanceArn}`);
 
   const dateTaskName = `${environmentPrefix}-${dateFilteredTaskName}`;
 
-  await stopTaskIfExistsAndRunning(dateTaskName, dms, logger);
+  const dms = new DmsApi(awsRegion);
+
+  await stopTaskIfExistsAndRunning(dateTaskName, dms);
 
   await dms.createOrModifyTask(
     dateTaskName,
@@ -34,31 +33,33 @@ export const modifyTask = async (): Promise<void> => {
     addDateFilters,
   );
 
-  await startTaskWhenReady(dateTaskName, dms, logger);
+  await startTaskWhenReady(dateTaskName, dms);
+
+  return dateTaskName;
 };
 
-async function startTaskWhenReady(taskName: string, dms: DmsApi, logger: ILogger) {
+export async function startTaskWhenReady(taskName: string, dms: DmsApi) {
   await dms.waitForDesiredTaskStatus(taskName, ['ready', 'stopped']);
   const startStatus = await dms.startTask(taskName, 'reload-target');
-  logger.debug(`status of startTask is ${startStatus}`);
-
+  info(`status of startTask is ${startStatus}`);
 }
-async function stopTaskIfExistsAndRunning(taskName: string, dms: DmsApi, logger: ILogger) {
+
+export async function stopTaskIfExistsAndRunning(taskName: string, dms: DmsApi) {
   let taskStatus = '';
   try {
     taskStatus = await dms.getTaskStatus(taskName);
   } catch (error) {
-    logger.debug(`taskname ${taskName} doesn't exist`);
+    info(`taskname ${taskName} doesn't exist`);
     taskStatus = 'nonexistant';
   }
 
   if (taskStatus !== 'stopped' && taskStatus !== 'nonexistant') {
     try {
       const stopStatus = await dms.stopTask(taskName);
-      logger.debug(`status of stopTask is ${stopStatus}`);
+      info(`status of stopTask is ${stopStatus}`);
       await dms.waitTillTaskStopped(taskName);
-    } catch (error) {
-      logger.error(error);
+    } catch (err) {
+      error(err);
     }
   }
 }
@@ -90,20 +91,20 @@ function addDateFilters(options: Options) {
   const journalStartWindow = Duration.fromObject({ days: journalWindowDaysPast });
   const journalStartDate = startDate.minus(journalStartWindow);
 
-  addBetweenFilter(options, 'PROGRAMME', 'PROGRAMME_DATE', journalStartDate, endDate, logger);
-  addBetweenFilter(options, 'PROGRAMME_SLOT', 'PROGRAMME_DATE', journalStartDate, endDate, logger);
+  addBetweenFilter(options, 'PROGRAMME', 'PROGRAMME_DATE', journalStartDate, endDate);
+  addBetweenFilter(options, 'PROGRAMME_SLOT', 'PROGRAMME_DATE', journalStartDate, endDate);
 
   const personalCommitmentEndDate = startDate.plus(highLevelSlotTimeWindow);
   const personalCommitmentEndDateTime = personalCommitmentEndDate.plus({ hours: 23, minutes: 59, seconds: 59 });
 
   addOnOrBeforeFilter(options, 'PERSONAL_COMMITMENT', 'START_DATE_TIME',
-                      personalCommitmentEndDateTime, logger);
-  addOnOrAfterFilter(options, 'PERSONAL_COMMITMENT', 'END_DATE_TIME', journalStartDate, logger);
+                      personalCommitmentEndDateTime);
+  addOnOrAfterFilter(options, 'PERSONAL_COMMITMENT', 'END_DATE_TIME', journalStartDate);
 
   const deploymentEndDate = startDate.plus(deploymentTimeWindow);
-  addOnOrBeforeFilter(options, 'DEPLOYMENT', 'START_DATE', deploymentEndDate, logger);
-  addOnOrAfterFilter(options, 'DEPLOYMENT', 'END_DATE', journalStartDate, logger);
+  addOnOrBeforeFilter(options, 'DEPLOYMENT', 'START_DATE', deploymentEndDate);
+  addOnOrAfterFilter(options, 'DEPLOYMENT', 'END_DATE', journalStartDate);
 
   const ethnicOriginStartDate = startDate.minus(Duration.fromObject({ years: 3 }));
-  addBetweenFilter(options, 'ETHNIC_ORIGIN', 'LOADED_DATE', ethnicOriginStartDate, startDate, logger);
+  addBetweenFilter(options, 'ETHNIC_ORIGIN', 'LOADED_DATE', ethnicOriginStartDate, startDate);
 }

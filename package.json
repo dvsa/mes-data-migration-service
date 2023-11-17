@@ -24,7 +24,7 @@
     "test:jasmine-coverage": "c8 npm run test"
   },
   "dependencies": {
-    "@aws-sdk/client-database-migration-service": "^3.436.0",
+    "@aws-sdk/client-database-migration-service": "^3.437.0",
     "@dvsa/mes-microservice-common": "1.1.0",
     "escape-json-node": "^2.0.1",
     "lodash": "^4.17.21",

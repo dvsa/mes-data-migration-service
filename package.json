@@ -28,7 +28,7 @@
     "@dvsa/mes-microservice-common": "1.1.0",
     "escape-json-node": "^2.0.1",
     "lodash": "^4.17.21",
-    "luxon": "^3.4.3",
+    "luxon": "^3.4.4",
     "moment": "^2.29.4",
     "mysql2": "^3.6.2"
   },
